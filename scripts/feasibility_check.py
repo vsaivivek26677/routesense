@@ -1,7 +1,7 @@
 """Data feasibility check: can we get the real road network and weather we need?
 
 Downloads (and caches) the OSM drive network and Open-Meteo hourly weather for a
-region, builds the segment table, and prints headline numbers for the deck.
+region, builds the segment table, and prints headline numbers.
 
     python scripts/feasibility_check.py --region blr_core
 """

@@ -214,7 +214,7 @@ def node_table(segments: pd.DataFrame) -> pd.DataFrame:
 
 
 def summarize_segments(seg: pd.DataFrame) -> dict:
-    """Headline numbers for the feasibility check and the deck."""
+    """Headline numbers for the feasibility check and reports."""
     return {
         "segments": len(seg),
         "road_km": round(seg["length_m"].sum() / 1000, 1),

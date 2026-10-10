@@ -1,24 +1,25 @@
 # RouteSense: Fleet Route Risk Intelligence
 
-Netradyne Campus Innovation Challenge, *Fleet Route Risk Intelligence* theme.
+Route risk intelligence for delivery fleets, built and tested on real Bengaluru roads.
 **Know the risk before the trip.** Before dispatch, RouteSense scores each candidate route, explains why it is risky,
 suggests safer alternatives with their cost in minutes, and recommends a safer departure time.
-See [PLAN.md](PLAN.md) for the full plan.
+
+**Live demo:** https://routesense-vsaiv.azurewebsites.net
 
 ![Dispatch screen on real Bengaluru roads: a 16 km evening trip in the rain, with safer alternatives](docs/screenshots/blr_dispatch.png)
 
 ## What is built
 
-| Brief task | Implementation |
+| Component | Implementation |
 |---|---|
-| 1. Data preprocessing | `ingest/osm.py` (OSM road segments + features), `ingest/weather.py` (Open-Meteo), `sim/` (fleet telematics simulator on real roads with ground truth) |
-| 2. Hotspot detection | `models/hotspots.py`: severity- and recency-weighted events at intersections and road links, normalised by traffic, clustered into zones |
-| 3. Route risk scoring + confidence | `models/risk.py`: Poisson gradient boosting on road features × conditions, plus an empirical-Bayes correction per road that gives a confidence band and a "little data" flag |
-| 4. Safer alternatives | `routing/engine.py`: Pareto-optimal time/risk routes with an explicit recommendation policy, optional "cautious" mode that avoids uncertain roads |
-| 5. Visualisation | `web/`: risk overlay, highlighted hazards on the route, departure-time chart |
-| 6. Dispatch integration | `api/app.py`: dispatcher API, trip assignment log (SQLite) with post-trip outcomes |
-| 7. Analytics + reporting | `analytics.py`: weekly trends by road class, area, route, vehicle type, driver cohort and time slot; searchable hotspots |
-| 8. Performance evaluation | `evaluation.py`: temporal backtest vs baselines, ground-truth recovery, trip AUC + calibration, impact scored with true rates, timings |
+| Data preprocessing | `ingest/osm.py` (OSM road segments + features), `ingest/weather.py` (Open-Meteo), `sim/` (fleet telematics simulator on real roads with ground truth) |
+| Hotspot detection | `models/hotspots.py`: severity- and recency-weighted events at intersections and road links, normalised by traffic, clustered into zones |
+| Route risk scoring + confidence | `models/risk.py`: Poisson gradient boosting on road features × conditions, plus an empirical-Bayes correction per road that gives a confidence band and a "little data" flag |
+| Safer alternatives | `routing/engine.py`: Pareto-optimal time/risk routes with an explicit recommendation policy, optional "cautious" mode that avoids uncertain roads |
+| Visualisation | `web/`: risk overlay, highlighted hazards on the route, departure-time chart |
+| Dispatch integration | `api/app.py`: dispatcher API, trip assignment log (SQLite) with post-trip outcomes |
+| Analytics + reporting | `analytics.py`: weekly trends by road class, area, route, vehicle type, driver cohort and time slot; searchable hotspots |
+| Performance evaluation | `evaluation.py`: temporal backtest vs baselines, ground-truth recovery, trip AUC + calibration, impact scored with true rates, timings |
 
 Differentiators: **departure-time advisor**, **explained risk + AI driver briefing** (English/Hindi/Kannada via a free
 open-weight LLM on Groq, template fallback), **emerging hotspot alerts**, **uncertainty-aware routing**, **impact estimate**.
