@@ -1,0 +1,276 @@
+{
+  "split": "2026-07-01",
+  "data": {
+    "segments": 129261,
+    "trips": 110284,
+    "events": 283796,
+    "train_vehicle_km": 721654,
+    "test_vehicle_km": 367086
+  },
+  "segment_backtest": {
+    "distance_only": {
+      "deviance_explained": 0.0,
+      "top10pct_km_lift": 0.962,
+      "predicted_total": 3379.1
+    },
+    "raw_history": {
+      "deviance_explained": 0.0584,
+      "top10pct_km_lift": 2.168,
+      "predicted_total": 3419.3
+    },
+    "features_only": {
+      "deviance_explained": -0.0209,
+      "top10pct_km_lift": 1.043,
+      "predicted_total": 3316.6
+    },
+    "full_model": {
+      "deviance_explained": 0.1148,
+      "top10pct_km_lift": 2.158,
+      "predicted_total": 3337.1
+    },
+    "observed_total": 3576
+  },
+  "truth_recovery": {
+    "near_miss": {
+      "raw_history": 0.25,
+      "features_only": 0.264,
+      "full_model": 0.352
+    },
+    "harsh": {
+      "raw_history": 0.678,
+      "features_only": 0.349,
+      "full_model": 0.735
+    },
+    "segments_compared": 8353
+  },
+  "trip_backtest": {
+    "test_trips": 37114,
+    "trips_with_serious_event_pct": 8.98,
+    "auc_full_model": 0.675,
+    "auc_distance_only": 0.631,
+    "auc_duration_only": 0.574,
+    "calibration_by_decile": {
+      "predicted": [
+        0.0181,
+        0.0364,
+        0.05,
+        0.0618,
+        0.0734,
+        0.0857,
+        0.1006,
+        0.1201,
+        0.1476,
+        0.2052
+      ],
+      "observed": [
+        0.0194,
+        0.0388,
+        0.0528,
+        0.0625,
+        0.0776,
+        0.0919,
+        0.114,
+        0.1253,
+        0.1622,
+        0.2188
+      ]
+    }
+  },
+  "emerging_detection": {
+    "hazards": 24,
+    "detected": 14,
+    "median_delay_days": 10.5,
+    "delays_days": [
+      11,
+      12,
+      13,
+      5,
+      2,
+      41,
+      5,
+      13,
+      13,
+      9,
+      14,
+      10,
+      6,
+      6
+    ],
+    "busy_hazards_100_passes_2wk": 19,
+    "busy_detected": 13,
+    "per_hazard": [
+      {
+        "hazard_id": 0,
+        "passes_2wk": 120,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 1,
+        "passes_2wk": 36,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 2,
+        "passes_2wk": 1309,
+        "detected": true,
+        "delay_days": 11
+      },
+      {
+        "hazard_id": 3,
+        "passes_2wk": 378,
+        "detected": true,
+        "delay_days": 12
+      },
+      {
+        "hazard_id": 4,
+        "passes_2wk": 279,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 5,
+        "passes_2wk": 378,
+        "detected": true,
+        "delay_days": 13
+      },
+      {
+        "hazard_id": 6,
+        "passes_2wk": 188,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 7,
+        "passes_2wk": 132,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 8,
+        "passes_2wk": 562,
+        "detected": true,
+        "delay_days": 5
+      },
+      {
+        "hazard_id": 9,
+        "passes_2wk": 426,
+        "detected": true,
+        "delay_days": 2
+      },
+      {
+        "hazard_id": 10,
+        "passes_2wk": 152,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 11,
+        "passes_2wk": 54,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 12,
+        "passes_2wk": 107,
+        "detected": true,
+        "delay_days": 41
+      },
+      {
+        "hazard_id": 13,
+        "passes_2wk": 304,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 14,
+        "passes_2wk": 2933,
+        "detected": true,
+        "delay_days": 5
+      },
+      {
+        "hazard_id": 15,
+        "passes_2wk": 200,
+        "detected": true,
+        "delay_days": 13
+      },
+      {
+        "hazard_id": 16,
+        "passes_2wk": 276,
+        "detected": true,
+        "delay_days": 13
+      },
+      {
+        "hazard_id": 17,
+        "passes_2wk": 532,
+        "detected": true,
+        "delay_days": 9
+      },
+      {
+        "hazard_id": 18,
+        "passes_2wk": 456,
+        "detected": true,
+        "delay_days": 14
+      },
+      {
+        "hazard_id": 19,
+        "passes_2wk": 80,
+        "detected": true,
+        "delay_days": 10
+      },
+      {
+        "hazard_id": 20,
+        "passes_2wk": 24,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 21,
+        "passes_2wk": 799,
+        "detected": true,
+        "delay_days": 6
+      },
+      {
+        "hazard_id": 22,
+        "passes_2wk": 64,
+        "detected": false,
+        "delay_days": null
+      },
+      {
+        "hazard_id": 23,
+        "passes_2wk": 544,
+        "detected": true,
+        "delay_days": 6
+      }
+    ],
+    "false_alarm_areas": 12,
+    "false_alarms_per_week": 1.35
+  },
+  "impact": {
+    "trips_evaluated": 1500,
+    "rerouted_pct": 67.1,
+    "true_serious_events_cut_pct_all_trips": 13.78,
+    "true_serious_events_cut_pct_rerouted_trips": 20.13,
+    "extra_minutes_per_rerouted_trip": 2.56,
+    "extra_time_pct_all_trips": 7.15,
+    "serious_events_avoided_per_10k_trips": 128.58,
+    "note": "Both routes scored with the simulator's true event rates, not the model's estimates.",
+    "policy": {
+      "max_detour": 0.35,
+      "max_extra_pct": 0.15,
+      "free_extra_min": 3.0,
+      "max_extra_min": 10.0,
+      "min_risk_cut": 0.1,
+      "min_time_saving_min": 5.0
+    }
+  },
+  "timings": {
+    "exposure_tables_s": 10.71,
+    "model_fit_s": 32.85,
+    "risk_table_s": 55.79,
+    "emerging_replay_s": 1.79,
+    "engine_build_s": 2.48,
+    "route_options_ms_per_trip": 103.8
+  }
+}

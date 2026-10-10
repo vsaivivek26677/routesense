@@ -1,0 +1,16 @@
+# Runtime + pipeline dependencies for the container (Dockerfile), pinned to the versions
+# verified to rebuild the reported Bengaluru results. Development uses requirements.txt.
+osmnx==2.1.1
+geopandas==1.2.0
+shapely==2.2.0
+pyproj==3.8.0
+networkx==3.7
+numpy==2.5.3
+pandas==3.0.6
+pyarrow==26.0.0
+scikit-learn==1.9.1
+scipy==1.18.1
+joblib==1.6.0
+requests==2.34.2
+fastapi==0.143.0
+uvicorn==0.54.0

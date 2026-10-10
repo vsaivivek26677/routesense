@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RouteSense</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 1l7 7-7 7-7-7z' fill='%232a78d6'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">◆</span>
+      <div>
+        <div class="brand-name">RouteSense</div>
+        <div class="brand-tag">Know the risk before the trip</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" class="tab" data-tab="dispatch" aria-selected="true">Dispatch</button>
+      <button role="tab" class="tab" data-tab="hotspots" aria-selected="false">Hotspots &amp; alerts</button>
+      <button role="tab" class="tab" data-tab="analytics" aria-selected="false">Analytics</button>
+      <button role="tab" class="tab" data-tab="evaluation" aria-selected="false">Evaluation</button>
+    </nav>
+    <div class="topbar-right">
+      <span id="data-badge" class="badge" hidden></span>
+      <button id="theme-toggle" class="icon-btn" title="Toggle light/dark" aria-label="Toggle light or dark theme">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div id="synthetic-banner" class="banner" hidden>
+    Synthetic development city: roads and telematics are simulated for building and testing. Real Bengaluru roads replace them once OpenStreetMap data is loaded.
+  </div>
+
+  <main class="layout" id="layout">
+    <!-- ===================== DISPATCH ===================== -->
+    <section class="panel" data-panel="dispatch" aria-label="Dispatch">
+      <form id="trip-form" class="card form-grid" autocomplete="off">
+        <h2 class="card-title">Plan a trip</h2>
+        <label>From
+          <div class="row"><select id="origin" required></select>
+            <button type="button" class="ghost-btn" data-pick="origin" title="Pick on map">Pick</button></div>
+        </label>
+        <label>To
+          <div class="row"><select id="dest" required></select>
+            <button type="button" class="ghost-btn" data-pick="dest" title="Pick on map">Pick</button></div>
+        </label>
+        <label>Departure <input id="depart" type="datetime-local" required></label>
+        <label>Vehicle
+          <select id="vehicle">
+            <option value="lcv">Light commercial (LCV)</option>
+            <option value="truck">Truck</option>
+            <option value="two_wheeler">Two-wheeler</option>
+          </select>
+        </label>
+        <label class="check"><input id="rain" type="checkbox"> Raining / rain forecast</label>
+        <fieldset class="seg">
+          <legend>Plan on</legend>
+          <label><input type="radio" name="aversion" value="0" checked> Expected risk</label>
+          <label><input type="radio" name="aversion" value="1.5"> Cautious (avoid uncertain roads)</label>
+        </fieldset>
+        <button type="submit" class="primary-btn" id="find-btn">Find routes</button>
+        <p id="pick-hint" class="hint" hidden>Click the map to set the point.</p>
+      </form>
+
+      <div id="results" aria-live="polite"></div>
+
+      <div id="departure-card" class="card" hidden>
+        <h2 class="card-title">When to leave</h2>
+        <p id="departure-advice" class="advice"></p>
+        <div class="chart-box"><canvas id="dep-risk-chart" aria-label="Route risk by departure time"></canvas></div>
+        <div class="chart-box small"><canvas id="dep-time-chart" aria-label="Travel time by departure time"></canvas></div>
+        <details><summary>Table</summary><div id="dep-table"></div></details>
+      </div>
+
+      <div id="briefing-card" class="card" hidden>
+        <h2 class="card-title">Driver briefing</h2>
+        <div class="row">
+          <select id="lang"><option value="en">English</option><option value="hi">हिन्दी (Hindi)</option><option value="kn">ಕನ್ನಡ (Kannada)</option></select>
+          <button id="brief-btn" class="ghost-btn">Generate</button>
+          <span id="brief-source" class="badge subtle" hidden></span>
+        </div>
+        <pre id="brief-text" class="brief" hidden></pre>
+      </div>
+
+      <div id="assign-card" class="card" hidden>
+        <h2 class="card-title">Assign trip</h2>
+        <div class="row">
+          <input id="driver" placeholder="Driver (optional)">
+          <input id="vehicle-id" placeholder="Vehicle no. (optional)">
+          <button id="assign-btn" class="primary-btn">Assign selected route</button>
+        </div>
+        <h3 class="sub-title">Recent dispatches</h3>
+        <div id="dispatch-log"></div>
+      </div>
+    </section>
+
+    <!-- ===================== HOTSPOTS ===================== -->
+    <section class="panel" data-panel="hotspots" aria-label="Hotspots and alerts" hidden>
+      <div class="card">
+        <h2 class="card-title">Emerging hotspot alerts <span class="muted" id="alert-count"></span></h2>
+        <p class="hint">Roads where incidents suddenly rose in the last 14 days (false-discovery rate 1%, adjusted for city-wide trends).</p>
+        <div id="alert-list" class="list"></div>
+      </div>
+      <div class="card">
+        <h2 class="card-title">Hotspots <span class="muted" id="hotspot-count"></span></h2>
+        <div class="row">
+          <input id="hotspot-q" type="search" placeholder="Search road name or id">
+          <select id="hotspot-kind"><option value="">All</option><option value="intersection">Intersections</option><option value="road">Road links</option></select>
+        </div>
+        <p class="hint">Ranked by severity- and recency-weighted events above what traffic on similar roads explains.</p>
+        <div id="hotspot-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- ===================== ANALYTICS ===================== -->
+    <section class="panel wide" data-panel="analytics" aria-label="Analytics" hidden>
+      <div id="kpis" class="tiles"></div>
+      <div class="card">
+        <div class="filter-row">
+          <label>Group by
+            <select id="dim">
+              <option value="road_class">Road class</option>
+              <option value="area">City area</option>
+              <option value="vehicle_type">Vehicle type</option>
+              <option value="driver_cohort">Driver cohort</option>
+              <option value="time_slot">Departure time slot</option>
+              <option value="route">Route</option>
+            </select>
+          </label>
+          <label>Metric
+            <select id="metric">
+              <option value="serious">Serious events (near-miss + accident)</option>
+              <option value="harsh">Harsh driving events</option>
+              <option value="near_miss">Near-misses</option>
+              <option value="accident">Accidents</option>
+            </select>
+          </label>
+        </div>
+        <h2 class="card-title" id="trend-title">Weekly rate per 100 km</h2>
+        <div class="chart-box tall"><canvas id="trend-chart"></canvas></div>
+        <details><summary>Table</summary><div id="trend-table"></div></details>
+      </div>
+      <div class="card">
+        <h2 class="card-title">Dispatch log</h2>
+        <div id="dispatch-summary" class="tiles compact"></div>
+      </div>
+    </section>
+
+    <!-- ===================== EVALUATION ===================== -->
+    <section class="panel wide" data-panel="evaluation" aria-label="Evaluation" hidden>
+      <div id="eval-empty" class="card" hidden><p>No evaluation report yet. Run <code>python scripts/evaluate.py</code>.</p></div>
+      <div id="eval-tiles" class="tiles"></div>
+      <div class="grid-2">
+        <div class="card">
+          <h2 class="card-title">Which roads see serious events next? (test period)</h2>
+          <div id="eval-methods"></div>
+          <p class="hint">Deviance explained: share of the variation in each road's future serious events captured by the method. Lift: serious-event rate on the riskiest 10% of driven km versus the average.</p>
+        </div>
+        <div class="card">
+          <h2 class="card-title">Calibration: predicted vs observed serious events per trip</h2>
+          <div class="chart-box"><canvas id="calib-chart"></canvas></div>
+          <details><summary>Table</summary><div id="calib-table"></div></details>
+        </div>
+      </div>
+      <div class="card">
+        <h2 class="card-title">Method notes</h2>
+        <div id="eval-notes" class="notes"></div>
+      </div>
+    </section>
+
+    <div id="map-wrap" class="map-wrap">
+      <div id="map" aria-label="Map"></div>
+      <div class="map-controls card">
+        <label class="check"><input type="checkbox" id="layer-risk" checked> Risk overlay</label>
+        <label class="check"><input type="checkbox" id="layer-moderate"> Include moderate</label>
+        <label class="check"><input type="checkbox" id="layer-base"> Basemap</label>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="vendor/chartjs/chart.umd.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

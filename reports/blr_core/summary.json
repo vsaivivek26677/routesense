@@ -1,0 +1,121 @@
+{
+  "region": "blr_core",
+  "bbox": [
+    77.55,
+    12.9,
+    77.7,
+    13.02
+  ],
+  "roads": {
+    "segments": 129261,
+    "road_km": 7474.8,
+    "lit_tag_coverage_pct": 3.6,
+    "lit_share_where_tagged_pct": 96.0,
+    "junctions_4plus_pct": 36.2,
+    "sharp_curve_pct": 4.4,
+    "km_by_class": {
+      "residential": 5795.6,
+      "tertiary": 753.4,
+      "secondary": 360.9,
+      "primary": 266.0,
+      "living_street": 159.2,
+      "trunk": 96.3,
+      "unclassified": 43.2,
+      "other": 0.1
+    }
+  },
+  "weather_by_month": [
+    {
+      "month": "2026-03",
+      "precip_mm": 4.4,
+      "wet_hours_pct": 0.4
+    },
+    {
+      "month": "2026-04",
+      "precip_mm": 2.3,
+      "wet_hours_pct": 0.3
+    },
+    {
+      "month": "2026-05",
+      "precip_mm": 87.0,
+      "wet_hours_pct": 4.8
+    },
+    {
+      "month": "2026-06",
+      "precip_mm": 87.8,
+      "wet_hours_pct": 6.9
+    },
+    {
+      "month": "2026-07",
+      "precip_mm": 64.0,
+      "wet_hours_pct": 5.5
+    },
+    {
+      "month": "2026-08",
+      "precip_mm": 147.2,
+      "wet_hours_pct": 11.7
+    }
+  ],
+  "simulation": {
+    "trips": 110284,
+    "vehicle_km": 1088740,
+    "events": 283796,
+    "events_per_100km": {
+      "harsh_brake": 16.944,
+      "harsh_turn": 4.454,
+      "harsh_accel": 3.73,
+      "near_miss": 0.929,
+      "accident": 0.009
+    },
+    "accidents": 100,
+    "accidents_per_million_km": 91.8,
+    "serious_event_share_by_slot_pct": {
+      "00-03": 15.0,
+      "03-06": 14.0,
+      "06-09": 6.9,
+      "09-12": 9.4,
+      "12-15": 10.2,
+      "15-18": 9.8,
+      "18-21": 14.4,
+      "21-24": 20.2
+    },
+    "emerging_hazards": 24
+  },
+  "morth_2022_reference": {
+    "source": "MoRTH, Road Accidents in India 2022",
+    "total_accidents": 461312,
+    "accident_share_by_slot_pct": {
+      "18-21": 20.4,
+      "15-18": 17.3
+    },
+    "lowest_slots": "00-06",
+    "adverse_weather_share_pct": 16.6
+  },
+  "model": {
+    "alpha": {
+      "harsh": 2.793,
+      "near_miss": 1.65,
+      "accident": 1000.0
+    },
+    "features": [
+      "road_class",
+      "length_m",
+      "speed_kph",
+      "lanes",
+      "lit",
+      "junction_degree",
+      "max_turn_deg",
+      "total_turn_deg",
+      "sinuosity",
+      "is_bridge",
+      "oneway",
+      "band",
+      "rain",
+      "vehicle"
+    ],
+    "data_sparse_segments_pct": 85.3,
+    "never_driven_segments_pct": 80.0
+  },
+  "n_hotspots": 949,
+  "n_alerts": 13
+}

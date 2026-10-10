@@ -1,0 +1,11 @@
+[project]
+name = "routesense"
+version = "0.1.0"
+description = "Fleet route risk intelligence (Netradyne Campus Innovation Challenge)"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+include = ["routesense*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

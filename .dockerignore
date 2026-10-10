@@ -1,0 +1,12 @@
+.venv/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.git/
+tests/
+docs/
+data/raw/
+data/processed/dev_city/
+data/processed/*/sim/
+data/processed/*/dispatch.sqlite
